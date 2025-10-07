@@ -65,9 +65,9 @@ class TimerScene extends Phaser.Scene {
         timerPanel.strokeRoundedRect(centerX - 280, centerY - 100, 560, 120, 10);
 
         // Timer display with glow effect
-        this.timerText = this.add.text(centerX, centerY - 40, '00:00:00', {
+        this.timerText = this.add.text(centerX, centerY - 40, '00:00:00.00', {
             fontSize: '80px',
-            fontFamily: 'Impact, Arial Black, monospace',
+            fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#00ff88',
             fontStyle: 'bold',
             letterSpacing: '8px'
@@ -203,7 +203,7 @@ class TimerScene extends Phaser.Scene {
             this.timerEvent = null;
         }
         this.timeInSeconds = 0;
-        this.timerText.setText('00:00:00');
+        this.timerText.setText('00:00:00.00');
         this.startStopButton.label.setText('START');
         this.startStopButton.bg.setFillStyle(0x00cc44);
         this.startStopButton.border.setFillStyle(0x00cc44);
