@@ -1,15 +1,16 @@
 {
-  "name": "bootstrap-template",
+  "name": "phaser-timer-app",
   "version": "1.0.0",
   "main": "index.js",
   "packageManager": "pnpm@9.0.0",
   "scripts": {
+    "start": "npx serve . -p 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "A timer app built with Phaser",
   "dependencies": {
     "colyseus": "^0.16.5",
     "phaser": "^3.90.0",
