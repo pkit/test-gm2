@@ -124,19 +124,21 @@ class TimerScene extends Phaser.Scene {
         // Accent stripe on button
         const stripe = this.add.rectangle(-20, -10, 80, 4, 0xffffff, 0.3).setAngle(-20);
 
-        const label = this.add.text(0, 0, text, {
-            fontSize: '22px',
-            fontFamily: 'Impact, Arial Black, Arial',
-            color: '#ffffff',
-            fontStyle: 'bold',
-            letterSpacing: '2px'
-        }).setOrigin(0.5);
+        button.add([shadow, bg, border, stripe]);
 
-        button.add([shadow, bg, border, stripe, label]);
+        // Create label OUTSIDE container and position it separately
+        const label = this.add.text(x, y, text, {
+            fontSize: '22px',
+            fontFamily: 'Arial',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5).setDepth(100);
 
         // Hover effects
         bg.on('pointerover', () => {
             button.setScale(1.05);
+            label.setScale(1.05);
+            label.setPosition(x, y);
             bg.setFillStyle(Phaser.Display.Color.GetColor(
                 Math.min(255, Phaser.Display.Color.IntegerToColor(color).r + 40),
                 Math.min(255, Phaser.Display.Color.IntegerToColor(color).g + 40),
@@ -146,15 +148,21 @@ class TimerScene extends Phaser.Scene {
 
         bg.on('pointerout', () => {
             button.setScale(1);
+            label.setScale(1);
+            label.setPosition(x, y);
             bg.setFillStyle(color);
         });
 
         bg.on('pointerdown', () => {
             button.setScale(0.95);
+            label.setScale(0.95);
+            label.setPosition(x, y);
         });
 
         bg.on('pointerup', () => {
             button.setScale(1.05);
+            label.setScale(1.05);
+            label.setPosition(x, y);
             callback();
         });
 
