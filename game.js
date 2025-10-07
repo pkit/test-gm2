@@ -67,14 +67,13 @@ class TimerScene extends Phaser.Scene {
         // Timer display with glow effect
         this.timerText = this.add.text(centerX, centerY - 40, '00:00:00.00', {
             fontSize: '80px',
-            fontFamily: 'Arial Black, Arial, sans-serif',
+            fontFamily: 'Arial',
             color: '#00ff88',
-            fontStyle: 'bold',
-            letterSpacing: '8px'
+            align: 'center'
         }).setOrigin(0.5);
 
         // Add glow/shadow effect
-        this.timerText.setShadow(0, 0, '#00ff88', 15, false, true);
+        this.timerText.setShadow(2, 2, '#00ff88', 10);
 
         // Start/Stop button
         this.startStopButton = this.createSportyButton(centerX - 140, centerY + 80, 'START', 0x00cc44, () => {
@@ -248,12 +247,16 @@ class TimerScene extends Phaser.Scene {
 }
 
 const config = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     width: 800,
     height: 600,
     parent: 'game-container',
     backgroundColor: '#0a0e27',
-    scene: TimerScene
+    scene: TimerScene,
+    render: {
+        antialias: true,
+        pixelArt: false
+    }
 };
 
 const game = new Phaser.Game(config);
