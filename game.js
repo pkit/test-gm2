@@ -10,79 +10,143 @@ class TimerScene extends Phaser.Scene {
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
 
-        // Background
-        this.add.rectangle(0, 0, 800, 600, 0x34495e).setOrigin(0);
+        // Sporty gradient background
+        const graphics = this.add.graphics();
+        graphics.fillGradientStyle(0x0a0e27, 0x0a0e27, 0x1a1f3a, 0x1a1f3a, 1);
+        graphics.fillRect(0, 0, 800, 600);
 
-        // Title
-        this.add.text(centerX, 50, 'TIMER APP', {
-            fontSize: '48px',
-            fontFamily: 'Arial',
-            color: '#ecf0f1',
-            fontStyle: 'bold'
+        // Dynamic racing stripes
+        for (let i = 0; i < 3; i++) {
+            const stripe = this.add.rectangle(
+                -200 + i * 350,
+                300,
+                800,
+                8,
+                0xff3366,
+                0.15
+            ).setAngle(-25);
+        }
+
+        // Corner accent lines (sporty effect)
+        const accentColor = 0xff3366;
+        this.add.rectangle(0, 0, 150, 4, accentColor).setOrigin(0, 0);
+        this.add.rectangle(0, 0, 4, 150, accentColor).setOrigin(0, 0);
+        this.add.rectangle(800, 0, 150, 4, accentColor).setOrigin(1, 0);
+        this.add.rectangle(800, 0, 4, 150, accentColor).setOrigin(1, 0);
+
+        // Title with sporty style
+        const titleShadow = this.add.text(centerX + 3, 53, 'STOPWATCH', {
+            fontSize: '56px',
+            fontFamily: 'Impact, Arial Black, Arial',
+            color: '#000000',
+            fontStyle: 'bold',
+            letterSpacing: '4px'
+        }).setOrigin(0.5);
+        titleShadow.setAlpha(0.3);
+
+        this.add.text(centerX, 50, 'STOPWATCH', {
+            fontSize: '56px',
+            fontFamily: 'Impact, Arial Black, Arial',
+            color: '#ffffff',
+            fontStyle: 'bold',
+            letterSpacing: '4px'
         }).setOrigin(0.5);
 
-        // Timer display
-        this.timerText = this.add.text(centerX, centerY - 50, '00:00:00', {
-            fontSize: '72px',
-            fontFamily: 'Arial, monospace',
-            color: '#3498db',
-            fontStyle: 'bold'
+        // Racing accent bar under title
+        this.add.rectangle(centerX, 85, 280, 5, 0xff3366).setOrigin(0.5);
+
+        // Timer display background panel
+        const timerPanel = this.add.graphics();
+        timerPanel.fillStyle(0x000000, 0.4);
+        timerPanel.fillRoundedRect(centerX - 280, centerY - 100, 560, 120, 10);
+
+        // Sporty border for timer
+        timerPanel.lineStyle(3, 0xff3366, 1);
+        timerPanel.strokeRoundedRect(centerX - 280, centerY - 100, 560, 120, 10);
+
+        // Timer display with glow effect
+        this.timerText = this.add.text(centerX, centerY - 40, '00:00:00', {
+            fontSize: '80px',
+            fontFamily: 'Impact, Arial Black, monospace',
+            color: '#00ff88',
+            fontStyle: 'bold',
+            letterSpacing: '8px'
         }).setOrigin(0.5);
+
+        // Add glow/shadow effect
+        this.timerText.setShadow(0, 0, '#00ff88', 15, false, true);
 
         // Start/Stop button
-        this.startStopButton = this.createButton(centerX - 120, centerY + 80, 'START', 0x27ae60, () => {
+        this.startStopButton = this.createSportyButton(centerX - 140, centerY + 80, 'START', 0x00cc44, () => {
             this.toggleTimer();
         });
 
         // Reset button
-        this.resetButton = this.createButton(centerX + 120, centerY + 80, 'RESET', 0xe74c3c, () => {
+        this.resetButton = this.createSportyButton(centerX + 140, centerY + 80, 'RESET', 0xff3366, () => {
             this.resetTimer();
         });
 
         // Lap button
-        this.lapButton = this.createButton(centerX, centerY + 80, 'LAP', 0xf39c12, () => {
+        this.lapButton = this.createSportyButton(centerX, centerY + 80, 'LAP', 0xffaa00, () => {
             this.recordLap();
         });
 
-        // Lap times display
+        // Lap times display with panel
         this.lapTimesText = this.add.text(centerX, centerY + 180, '', {
             fontSize: '18px',
-            fontFamily: 'Arial',
-            color: '#ecf0f1',
-            align: 'center'
+            fontFamily: 'Arial Black, Arial',
+            color: '#ffffff',
+            align: 'center',
+            fontStyle: 'bold'
         }).setOrigin(0.5);
 
         this.laps = [];
     }
 
-    createButton(x, y, text, color, callback) {
-        const buttonWidth = 100;
-        const buttonHeight = 50;
+    createSportyButton(x, y, text, color, callback) {
+        const buttonWidth = 120;
+        const buttonHeight = 55;
 
         const button = this.add.container(x, y);
 
+        // Button shadow for depth
+        const shadow = this.add.rectangle(2, 4, buttonWidth, buttonHeight, 0x000000, 0.5);
+        shadow.setStrokeStyle(2, 0x000000, 0.3);
+
+        // Main button background with angle
         const bg = this.add.rectangle(0, 0, buttonWidth, buttonHeight, color)
             .setInteractive({ useHandCursor: true });
 
+        // Sporty border
+        const border = this.add.rectangle(0, 0, buttonWidth, buttonHeight);
+        border.setStrokeStyle(3, 0xffffff, 0.8);
+        border.setFillStyle(color);
+
+        // Accent stripe on button
+        const stripe = this.add.rectangle(-20, -10, 80, 4, 0xffffff, 0.3).setAngle(-20);
+
         const label = this.add.text(0, 0, text, {
-            fontSize: '20px',
-            fontFamily: 'Arial',
+            fontSize: '22px',
+            fontFamily: 'Impact, Arial Black, Arial',
             color: '#ffffff',
-            fontStyle: 'bold'
+            fontStyle: 'bold',
+            letterSpacing: '2px'
         }).setOrigin(0.5);
 
-        button.add([bg, label]);
+        button.add([shadow, bg, border, stripe, label]);
 
         // Hover effects
         bg.on('pointerover', () => {
+            button.setScale(1.05);
             bg.setFillStyle(Phaser.Display.Color.GetColor(
-                Math.min(255, Phaser.Display.Color.IntegerToColor(color).r + 30),
-                Math.min(255, Phaser.Display.Color.IntegerToColor(color).g + 30),
-                Math.min(255, Phaser.Display.Color.IntegerToColor(color).b + 30)
+                Math.min(255, Phaser.Display.Color.IntegerToColor(color).r + 40),
+                Math.min(255, Phaser.Display.Color.IntegerToColor(color).g + 40),
+                Math.min(255, Phaser.Display.Color.IntegerToColor(color).b + 40)
             ));
         });
 
         bg.on('pointerout', () => {
+            button.setScale(1);
             bg.setFillStyle(color);
         });
 
@@ -91,11 +155,12 @@ class TimerScene extends Phaser.Scene {
         });
 
         bg.on('pointerup', () => {
-            button.setScale(1);
+            button.setScale(1.05);
             callback();
         });
 
         button.bg = bg;
+        button.border = border;
         button.label = label;
         return button;
     }
@@ -109,7 +174,8 @@ class TimerScene extends Phaser.Scene {
                 this.timerEvent = null;
             }
             this.startStopButton.label.setText('START');
-            this.startStopButton.bg.setFillStyle(0x27ae60);
+            this.startStopButton.bg.setFillStyle(0x00cc44);
+            this.startStopButton.border.setFillStyle(0x00cc44);
         } else {
             // Start the timer
             this.isRunning = true;
@@ -120,7 +186,8 @@ class TimerScene extends Phaser.Scene {
                 loop: true
             });
             this.startStopButton.label.setText('STOP');
-            this.startStopButton.bg.setFillStyle(0xe67e22);
+            this.startStopButton.bg.setFillStyle(0xff6600);
+            this.startStopButton.border.setFillStyle(0xff6600);
         }
     }
 
@@ -138,7 +205,8 @@ class TimerScene extends Phaser.Scene {
         this.timeInSeconds = 0;
         this.timerText.setText('00:00:00');
         this.startStopButton.label.setText('START');
-        this.startStopButton.bg.setFillStyle(0x27ae60);
+        this.startStopButton.bg.setFillStyle(0x00cc44);
+        this.startStopButton.border.setFillStyle(0x00cc44);
         this.laps = [];
         this.updateLapDisplay();
     }
@@ -159,7 +227,7 @@ class TimerScene extends Phaser.Scene {
         const recentLaps = this.laps.slice(-3).reverse();
         const lapStrings = recentLaps.map((time, index) => {
             const lapNumber = this.laps.length - index;
-            return `Lap ${lapNumber}: ${this.formatTime(time)}`;
+            return `LAP ${lapNumber} ▸ ${this.formatTime(time)}`;
         });
 
         this.lapTimesText.setText(lapStrings.join('\n'));
@@ -184,7 +252,7 @@ const config = {
     width: 800,
     height: 600,
     parent: 'game-container',
-    backgroundColor: '#34495e',
+    backgroundColor: '#0a0e27',
     scene: TimerScene
 };
 
