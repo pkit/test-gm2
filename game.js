@@ -247,7 +247,7 @@ class TimerScene extends Phaser.Scene {
 }
 
 const config = {
-    type: Phaser.CANVAS,
+    type: Phaser.AUTO,
     width: 800,
     height: 600,
     parent: 'game-container',
