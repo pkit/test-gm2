@@ -126,11 +126,13 @@ class TimerScene extends Phaser.Scene {
 
         const label = this.add.text(0, 0, text, {
             fontSize: '22px',
-            fontFamily: 'Impact, Arial Black, Arial',
+            fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
             fontStyle: 'bold',
-            letterSpacing: '2px'
-        }).setOrigin(0.5);
+            letterSpacing: '2px',
+            stroke: '#000000',
+            strokeThickness: 2
+        }).setOrigin(0.5).setDepth(10);
 
         button.add([shadow, bg, border, stripe, label]);
 
